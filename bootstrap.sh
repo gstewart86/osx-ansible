@@ -1,5 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 
-# shell script to bootstrap the system to the point that it has ansible
- type brew >/dev/null 2>&1 || /bin/bash ./roles/homebrew/files/install-homebrew.sh
- type ansible >/dev/null 2>&1 || /usr/local/bin/brew install ansible
+# Check if Homebrew is installed, if not, install it
+if ! command -v brew &>/dev/null; then
+    echo "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+# Check if Ansible is installed, if not, install it using Homebrew
+if ! command -v ansible &>/dev/null; then
+    echo "Installing Ansible..."
+    brew install ansible
+fi
