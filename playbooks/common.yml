@@ -28,14 +28,9 @@
     - {role: 'osx_base', tags: 'osx_base'}
     - {role: 'dotfiles', tags: 'dotfiles', when: dotfiles}
     - {role: 'homebrew', tags: 'homebrew', when: homebrew}
-    - {role: 'mas', tags: 'mas', when: mas}
     - {role: 'pip', tags: 'pip', when: pip_packages or pip3_packages}
     - {role: 'golang', tags: 'golang', when: go_packages}
-    - {role: 'github', tags: 'github', when: github}
     - {role: 'defaults', tags: 'defaults', when: defaults}
-    - {role: 'vim-plug', tags: 'vim-plug', when: vimplug}
-    - {role: 'wallpaper', tags: 'wallpaper', when: wallpaper}
-    - {role: 'sudo_tid', tags: 'sudo_tid', when: sudo_tid}
   tasks:
     - name: Create dirs
       debug:

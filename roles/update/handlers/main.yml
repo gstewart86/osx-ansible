@@ -1,6 +1,0 @@
----
-# handlers file for roles/update
-- name: Reboot
-  command: reboot
-  become: true
-  become_user: root
