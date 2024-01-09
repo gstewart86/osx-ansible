@@ -1,10 +1,12 @@
 # Ansible
+
 Ansible configurations, playbooks and roles for setting up an OSX host.
 
 osx-ansible/playbooks/common.yml shows what roles will be loaded.\
 To see what any role does, look at osx-ansible/roles/${role}/task/main.yml
 
-## Before Running You Should:
+## Before Running You Should
+
     cd osx-ansible
     cp example.yml local.yml
 
@@ -13,15 +15,18 @@ You'll want to do this, as some defaults variables have my info in them.
 
 ## Installation
 
-#### Makefile:
+### Makefile
+
     make bootstrap
     make install
 
-#### Raw commands:
+### Raw commands
+
     ./bootstrap.sh
     ansible-playbook playbooks/common.yml -K
 
-#### Make targets
+### Make targets
+
 1. base: installs osx_base role
 2. install: runs the bootstrap script
 3. dump_facts: dumps all local facts ansible can find
