@@ -1,0 +1,55 @@
+---
+# Main
+full_name: "Garrett Stewart"
+usernm: "{{ ansible_env.USER }}"
+groupnm: "staff"
+email: "garrett.tstewart@gmail.com"
+hostname: "{{ usernm }}-mbp"
+home_dir: "/Users/{{ usernm }}"
+projects_dir: "{{ home_dir }}/projects"
+python_env_dir: "{{ home_dir }}/.envs"
+ssh_dir: "{{ home_dir }}/.ssh"
+login_shell: "/usr/local/bin/zsh"
+
+# OSX_Base
+ssh_key_name: "{{ ssh_dir }}/id_rsa"
+
+# Tweaks
+finder_new_window_path: "file://{{ home_dir }}"
+screenshots_dir: "{{ home_dir }}/Downloads"
+dockitems_remove_all: true
+
+dockutil_desired:
+  - name: System Preferences
+    path: "/Applications/System Preferences.app"
+    pos: 6
+
+dockutil_desired_right:
+  - name: Applications
+    path: '/Applications'
+    pos: 7
+    view: auto
+    display: stack
+    sort: name
+    section: others
+  - name: Utilities
+    path: '/Applications/Utilities'
+    pos: 9
+    view: auto
+    display: stack
+    sort: name
+    section: others
+  - name: Home
+    path: '/Users/{{ usernm }}'
+    pos: 10
+    view: auto
+    display: folder
+    sort: name
+    section: others
+  - name: Downloads
+    path: '/Users/{{ usernm }}/Downloads'
+    pos: 11
+    view: grid
+    display: folder
+    sort: name
+    sections: other
