@@ -25,8 +25,11 @@ if ! command -v brew &>/dev/null; then
     if [ "$SHELL_SUPPORTED" = true ]; then
         # Dynamically update PATH in the user's shell profile
         echo "Adding Homebrew to PATH in ${SHELL_PROFILE}..."
-        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> "${SHELL_PROFILE}"
-        eval "$(/opt/homebrew/bin/brew shellenv)"
+        {
+            echo
+            echo "# Homebrew environment setup"
+            echo 'eval "$(/opt/homebrew/bin/brew shellenv)"'
+        } >> "${SHELL_PROFILE}"
     else
         echo "Please manually add Homebrew to your PATH in your shell's profile file."
     fi
