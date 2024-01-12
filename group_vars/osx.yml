@@ -6,6 +6,21 @@ email: "gstewart@es.net"
 hostname: "{{ username }}-mbp"
 home_dir: "/Users/{{ username }}"
 
+# apps
+cask_apps:
+  - slack
+  - visual-studio-code
+  - google-chrome
+  - google-drive
+  - keepassx
+  - iterm2
+  - docker
+  - virtualbox
+
+formula_apps:
+  - tree
+  - neofetch
+
 # Zsh
 login_shell: "/usr/local/bin/zsh"
 custom_plugin_source_path: "/Users/gstewart/Google\ Drive/My\ Drive/code/bash/oh-my-zsh-custom"

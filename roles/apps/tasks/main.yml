@@ -1,0 +1,15 @@
+---
+- name: Install cask applications
+  community.general.homebrew:
+    name: "{{ item }}"
+    state: present
+    install_options: cask
+  loop: "{{ cask_apps }}"
+  tags: apps
+
+- name: Install formula applications
+  community.general.homebrew:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ formula_apps }}"
+  tags: apps
