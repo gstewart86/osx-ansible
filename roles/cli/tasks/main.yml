@@ -69,10 +69,11 @@
         insertafter: EOF
       tags: cli
 
-    - name: Copy .p10k.zsh to home directory
-      ansible.builtin.copy:
-        src: ".p10k.zsh"
+    - name: Symlink .p10k.zsh to user home directory
+      ansible.builtin.file:
+        src: "{{ custom_plugin_source_path }}/../.p10k.zsh"
         dest: "~/.p10k.zsh"
+        state: link
       tags: cli
 
 - name: Install specified Zsh plugins - docker aliases
