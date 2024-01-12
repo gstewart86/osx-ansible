@@ -110,13 +110,3 @@
 #         line: 'fortune | cowsay | lolcat'
 #         insertafter: EOF
 #       tags: cli
-
-- name: Remind user to download theme and change settings
-  ansible.builtin.debug:
-    msg: |
-      download the argonaut color scheme (or whatever) here:
-      https://iterm2colorschemes.com/
-      import in iterm2 profiles
-
-      enable word skipping (alt + > or alt + <)
-      Profiles > Keys > Presets > Natural Text Editing
