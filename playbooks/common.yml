@@ -1,39 +1,19 @@
 ---
-#### Set up OSX machines
-# Comment out any module you don't want, but
-# beware dependencies of modules
-####
-- name: Set up osx host
+- name: Configure OSX Machines
   hosts: osx
   connection: local
-  pre_tasks:
-    - name: Find our variables
-      include_vars: "{{ item }}"
-      with_first_found:
-        - "{{ inventory_dir }}/local.yml"
-        - "{{ inventory_dir }}/defaults.yml"
-      tags:
-        - osx_base
-        - dotfiles
-        - homebrew
-        - mas
-        - pip
-        - golang
-        - github
-        - defaults
-        - vim-plug
-        - wallpaper
-        - sudo_tid
+  # become: true
+
   roles:
-    - {role: 'osx_base', tags: 'osx_base'}
-    - {role: 'dotfiles', tags: 'dotfiles', when: dotfiles}
-    - {role: 'homebrew', tags: 'homebrew', when: homebrew}
-    - {role: 'pip', tags: 'pip', when: pip_packages or pip3_packages}
-    - {role: 'golang', tags: 'golang', when: go_packages}
-    - {role: 'defaults', tags: 'defaults', when: defaults}
+    - osx_base
+    - cli
+    - apps
+    - defaults
+    - git
+
   tasks:
     - name: Create dirs
-      debug:
+      ansible.builtin.debug:
         var: "{{ create_dirs }}"
       tags:
         - osx_base
