@@ -1,0 +1,122 @@
+---
+- name: Ensure Zsh is installed
+  ansible.builtin.package:
+    name: zsh
+    state: present
+  tags: cli
+
+- name: Ensure iterm2 is installed
+  ansible.builtin.homebrew_cask:
+    name: iterm2
+    state: present
+  tags: cli
+
+- name: Install and Configure Oh My Zsh
+  block:
+    - name: Check if Oh My Zsh is already installed
+      ansible.builtin.stat:
+        path: "{{ oh_my_zsh_path }}"
+      register: oh_my_zsh_installed
+      changed_when: false
+      tags: cli
+
+    - name: Install Oh My Zsh
+      ansible.builtin.shell:
+        cmd: sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+        creates: "{{ oh_my_zsh_path }}"
+      when: not oh_my_zsh_installed.stat.exists
+      tags: cli
+
+    - name: Ensure the custom user-specific plugin directory exists
+      ansible.builtin.file:
+        path: "{{ oh_my_zsh_custom_user_path }}"
+        state: directory
+      tags: cli
+
+    - name: Remove existing user-specific directory
+      ansible.builtin.file:
+        path: "{{ oh_my_zsh_custom_user_path }}"
+        state: absent
+      tags: cli
+
+    - name: Symlink the entire custom plugin and theme directory to user-specific directory
+      ansible.builtin.file:
+        src: "{{ custom_plugin_source_path }}"
+        dest: "{{ oh_my_zsh_custom_user_path }}"
+        state: link
+      tags: cli
+
+- name: Install Powerlevel10k
+  block:
+    - name: Install Powerlevel10k theme for Oh My Zsh
+      ansible.builtin.git:
+        repo: 'https://github.com/romkatv/powerlevel10k.git'
+        dest: "{{ oh_my_zsh_custom_path }}/themes/powerlevel10k"
+      tags: cli
+
+    - name: Set Powerlevel10k as the Zsh theme
+      ansible.builtin.lineinfile:
+        path: "~/.zshrc"
+        regexp: '^ZSH_THEME=".*"'
+        line: 'ZSH_THEME="powerlevel10k/powerlevel10k"'
+        backrefs: yes
+      tags: cli
+
+    - name: Ensure .p10k.zsh is sourced in .zshrc
+      ansible.builtin.lineinfile:
+        path: "~/.zshrc"
+        line: '[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh'
+        insertafter: EOF
+      tags: cli
+
+    - name: Copy .p10k.zsh to home directory
+      ansible.builtin.copy:
+        src: ".p10k.zsh"
+        dest: "~/.p10k.zsh"
+      tags: cli
+
+- name: Install specified Zsh plugins - docker aliases
+  block:
+    - name: Install Zsh Docker aliases
+      ansible.builtin.git:
+        repo: 'git@github.com:akarzim/zsh-docker-aliases.git'
+        dest: "{{ oh_my_zsh_custom_path }}/plugins/zsh-docker-aliases"
+      tags: cli
+
+    - name: Add Docker aliases to Zsh plugins
+      ansible.builtin.lineinfile:
+        path: "~/.zshrc"
+        regexp: 'plugins=\(([^)]*)\)'
+        line: "plugins=({{ zsh_plugins | join(' ') }} zsh-docker-aliases)"
+        backrefs: yes
+      tags: cli
+
+# Interferes with powerlevel10k rapid prompt
+# - name: Additional Tools and Configuration
+#   block:
+#     - name: Install Cowsay, Fortune, and Lolcat
+#       ansible.builtin.package:
+#         name: "{{ item }}"
+#         state: present
+#       loop:
+#         - cowsay
+#         - fortune
+#         - lolcat
+#       tags: cli
+
+#     - name: Add Cowsay Fortune Lolcat command to .zshrc
+#       ansible.builtin.lineinfile:
+#         path: "~/.zshrc"
+#         line: 'fortune | cowsay | lolcat'
+#         insertafter: EOF
+#       tags: cli
+
+- name: Remind user to download theme and change settings
+  ansible.builtin.debug:
+    msg: |
+      download the argonaut color scheme (or whatever) here:
+      https://iterm2colorschemes.com/
+      import in iterm2 profiles
+
+      enable word skipping (alt + > or alt + <)
+      Profiles > Keys > Presets > Natural Text Editing
