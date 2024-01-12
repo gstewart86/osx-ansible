@@ -1,17 +1,24 @@
 ---
 # Main
 full_name: "Garrett Stewart"
-usernm: "{{ ansible_env.USER }}"
-groupnm: "staff"
-email: "garrett.tstewart@gmail.com"
-hostname: "{{ usernm }}-mbp"
-home_dir: "/Users/{{ usernm }}"
-projects_dir: "{{ home_dir }}/projects"
-python_env_dir: "{{ home_dir }}/.envs"
-ssh_dir: "{{ home_dir }}/.ssh"
+username: "{{ ansible_env.USER }}"
+email: "gstewart@es.net"
+hostname: "{{ username }}-mbp"
+home_dir: "/Users/{{ username }}"
+
+# Zsh
 login_shell: "/usr/local/bin/zsh"
+custom_plugin_source_path: "/Users/gstewart/Google\ Drive/My\ Drive/code/bash/oh-my-zsh-custom"
+zsh_plugins:
+  - git
+  - virtualenv
+  - python
+  - brew
+  - docker
+  - ansible
 
 # OSX_Base
+ssh_source_path: "/Users/gstewart/Google\ Drive/My\ Drive/keys/id_rsa"
 ssh_key_name: "{{ ssh_dir }}/id_rsa"
 
 # Tweaks
@@ -40,14 +47,14 @@ dockutil_desired_right:
     sort: name
     section: others
   - name: Home
-    path: '/Users/{{ usernm }}'
+    path: '/Users/{{ username }}'
     pos: 10
     view: auto
     display: folder
     sort: name
     section: others
   - name: Downloads
-    path: '/Users/{{ usernm }}/Downloads'
+    path: '/Users/{{ username }}/Downloads'
     pos: 11
     view: grid
     display: folder
