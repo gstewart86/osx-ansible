@@ -1,0 +1,11 @@
+---
+- name: Copy SSH keys from Google Drive
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: '0600'
+  loop:
+    - { src: ssh_source_path, dest: 'ssh_key_destination_path/id_rsa' }
+    - { src: ssh_source_path + '.pub', dest: 'ssh_key_destination_path/id_rsa.pub' }
+  become: true
+  tags: ssh_client

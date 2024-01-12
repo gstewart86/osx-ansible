@@ -10,12 +10,9 @@
   changed_when: false
 
 - name: Set computer name
-  command: "scutil --set {{ item }} {{ hostname }}"
-  loop:
-    - ComputerName
-    - LocalHostName
+  hostname:
+    name: "{{ hostname }}"
   become: true
-  become_user: root
   when: current_hostname.stdout != hostname
 
 - name: Defaults host name
@@ -27,57 +24,14 @@
   become: true
   become_user: root
 
-- name: Check for login shell
-  shell: "grep {{ login_shell }} /etc/shells"
-  register: etc_shells
-  changed_when: false
-  failed_when: false
-
-- name: Make sure login shell is available
-  lineinfile:
-    path: /etc/shells
-    insertafter: EOF
-    line: "{{ login_shell }}"
-  become: true
-  become_user: root
-  when: etc_shells.rc == 1
-
-- name: Refresh sudo cache so we don't get asked for a password again
-  command: "echo none"
-  become: true
-  changed_when: false
-
-# - name: Create directories
-#   file:
-#     path: "{{ item.path }}"
-#     state: directory
-#     owner: "{{ usernm }}"
-#     group: "{{ groupnm }}"
-#     mode: "{{ item.mode }}"
-#     recurse: true
-#   loop: "{{ create_dirs}}"
-
 - name: Check if key exists
   stat:
     path: "{{ ssh_key_name }}"
   register: ssh_key
 
 - name: Create ssh key(s)
-  command: ssh-keygen -t rsa -N '' -q -f "{{ ssh_key_name }}"
+  ansible.builtin.openssh_keypair:
+    path: "{{ ssh_key_name }}"
+    type: rsa
+    size: 2048  # Optionally specify key size
   when: (ssh_key.stat.exists == false)
-
-- name: Check if we've set the search domains yet
-  command: networksetup -getsearchdomains "{{ item }}"
-  register: search_domains_set
-  changed_when: false
-  loop:
-    - "{{ search_domain_service }}"
-
-- name: Set search domains
-  command: networksetup -setsearchdomains "{{ item.0 }}" "{{ search_domains }}"
-  become: true
-  become_user: root
-  when: item.1.stdout != search_domains
-  with_together:
-    - "{{ search_domain_service }}"
-    - "{{ search_domains_set.results }}"
