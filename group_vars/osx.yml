@@ -1,8 +1,7 @@
 ---
 # Main
-full_name: "Garrett Stewart"
 username: "{{ ansible_env.USER }}"
-email: "gstewart@es.net"
+email: "{{ username }}@es.net"
 hostname: "{{ username }}-mbp"
 home_dir: "/Users/{{ username }}"
 
