@@ -1,0 +1,22 @@
+---
+- name: Clone additional plugins
+  ansible.builtin.git:
+    repo: "{{ item.repo }}"
+    dest: "{{ oh_my_zsh_custom_plugins}}/{{ item.name }}"
+  loop: "{{ additional_plugins }}"
+  tags: cli
+
+- name: Clone dotfiles repository
+  ansible.builtin.git:
+    repo: "{{ dotfiles_repo }}"
+    dest: "{{ local_projects_path }}/dotfiles"
+    clone: yes
+    update: yes
+  tags: cli
+
+- name: Run GNU Stow to symlink dotfiles
+  ansible.builtin.command:
+    cmd: "stow -d {{ local_projects_path }}/dotfiles/dotfiles -t ~ -S ."
+  args:
+    chdir: "{{ local_projects_path }}/dotfiles"
+  tags: cli

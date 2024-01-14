@@ -1,0 +1,8 @@
+---
+- name: "Install theme {{ item.name }}"
+  ansible.builtin.git:
+    repo: "{{ item.value.repo }}"
+    dest: "{{ oh_my_zsh_custom_themes }}/{{ item.name}}"
+  tags: cli
+  with_dict: "{{ zsh_themes }}"
+  when: item.value.repo is defined

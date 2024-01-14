@@ -19,10 +19,13 @@ cask_apps:
 formula_apps:
   - tree
   - neofetch
+  - jq
 
 # Zsh
 login_shell: "/usr/local/bin/zsh"
 custom_plugin_source_path: "/Users/gstewart/Google\ Drive/My\ Drive/code/bash/oh-my-zsh-custom"
+local_projects_path: "~/repos"
+dotfiles_repo: "git@github.com:gstewart86/dotfiles.git"
 zsh_plugins:
   - git
   - virtualenv
@@ -30,6 +33,14 @@ zsh_plugins:
   - brew
   - docker
   - ansible
+
+additional_plugins:
+  - name: zsh-docker-aliases
+    repo: "git@github.com:akarzim/zsh-docker-aliases.git"
+
+zsh_themes:
+  - name: powerlevel10k
+    repo: 'https://github.com/romkatv/powerlevel10k.git'
 
 # OSX_Base
 ssh_source_path: "/Users/gstewart/Google\ Drive/My\ Drive/keys/id_rsa"
