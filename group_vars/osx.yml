@@ -9,6 +9,7 @@ home_dir: "/Users/{{ username }}"
 cask_apps:
   - slack
   - visual-studio-code
+  - microsoft-remote-desktop
   - google-chrome
   - google-drive
   - keepassx
@@ -20,6 +21,9 @@ formula_apps:
   - tree
   - neofetch
   - jq
+  - python
+  - nmap
+  - trippy
 
 # Zsh
 login_shell: "/usr/local/bin/zsh"
